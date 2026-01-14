@@ -486,6 +486,27 @@ body.controller-welcome.action-index .wiki,
   position: relative !important;
 }
 
+/* ============================================
+   OCULTAR CONTENIDO PERSONALIZADO SI EL USUARIO ESTÁ LOGUEADO
+   ============================================ */
+/* El JavaScript maneja la lógica de mostrar/ocultar, este CSS es solo un respaldo */
+/* Usar clase específica que el JS agregará cuando detecte usuario logueado */
+body.user-logged-in .ezertech-custom-content {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Mostrar contenido original cuando el usuario está logueado */
+body.user-logged-in #content h1,
+body.user-logged-in #content h2,
+body.user-logged-in #content p {
+  display: block !important;
+  visibility: visible !important;
+}
+
 /* Hero Section */
 .ezertech-hero {
   background: linear-gradient(135deg, #648cb4 0%, #345474 100%) !important;

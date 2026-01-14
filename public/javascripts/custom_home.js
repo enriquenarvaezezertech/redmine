@@ -6,6 +6,52 @@
   
   console.log('🚀 Ezertech Custom Home Script: INICIANDO');
   
+  // Función para verificar si el usuario está logueado
+  function isUserLoggedIn() {
+    // Método 1: Verificar si existe el elemento #loggedas con contenido (el más confiable)
+    const loggedAs = document.getElementById('loggedas');
+    if (loggedAs) {
+      const loggedAsText = loggedAs.textContent || '';
+      // Verificar que tenga contenido y no esté vacío
+      if (loggedAsText.trim().length > 0 && 
+          (loggedAsText.includes('Conectado') || loggedAsText.includes('Logged') || 
+           loggedAsText.includes('como') || loggedAsText.includes('as'))) {
+        console.log('Ezertech: Usuario logueado detectado (#loggedas con contenido válido)');
+        return true;
+      }
+    }
+    
+    // Método 2: Verificar si hay enlaces de "Terminar sesión" o "logout" en el top-menu
+    const topMenu = document.getElementById('top-menu');
+    if (topMenu) {
+      const logoutLinks = topMenu.querySelectorAll('a[href*="logout"], a.logout');
+      // Verificar que el enlace tenga texto visible
+      for (let link of logoutLinks) {
+        const linkText = link.textContent || '';
+        if (linkText.includes('Terminar') || linkText.includes('Log out') || 
+            linkText.includes('Cerrar') || linkText.includes('Sign out')) {
+          console.log('Ezertech: Usuario logueado detectado (enlace de logout válido en top-menu)');
+          return true;
+        }
+      }
+    }
+    
+    // Método 3: Verificar texto en el header que indique usuario logueado
+    const header = document.getElementById('header');
+    if (header) {
+      const headerText = header.textContent || '';
+      // Buscar texto específico que solo aparece cuando está logueado
+      if (headerText.includes('Conectado como') || headerText.includes('Logged in as') || 
+          (headerText.includes('Terminar sesión') && !headerText.includes('Iniciar sesión'))) {
+        console.log('Ezertech: Usuario logueado detectado (texto específico en header)');
+        return true;
+      }
+    }
+    
+    console.log('Ezertech: Usuario NO logueado (todos los métodos fallaron)');
+    return false;
+  }
+  
   // Función para verificar si estamos en la página de inicio (múltiples métodos)
   function isHomePage() {
     const body = document.body;
@@ -48,7 +94,20 @@
       return false;
     }
     
-    console.log('Ezertech: ✅ Página de inicio confirmada');
+    // Verificar si el usuario está logueado - si está logueado, NO mostrar el contenido personalizado
+    const userLoggedIn = isUserLoggedIn();
+    console.log('Ezertech: Estado de login =', userLoggedIn);
+    
+    // Agregar clase al body para CSS de respaldo
+    if (userLoggedIn) {
+      document.body.classList.add('user-logged-in');
+      console.log('Ezertech: ⚠️ Usuario logueado detectado - NO se mostrará el contenido personalizado');
+      return false;
+    } else {
+      document.body.classList.remove('user-logged-in');
+    }
+    
+    console.log('Ezertech: ✅ Página de inicio confirmada (usuario NO logueado) - Mostrando contenido personalizado');
     
     // Buscar el contenedor de contenido
     const content = document.getElementById('content');
