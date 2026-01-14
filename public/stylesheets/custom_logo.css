@@ -75,6 +75,321 @@
 }
 
 /* ============================================
+   PERSONALIZACIÓN MODERNA Y TECNOLÓGICA DEL LOGIN
+   ============================================ */
+
+/* Fondo moderno para la página de login */
+body.action-login,
+body.controller-account.action-login {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh !important;
+}
+
+/* Contenedor del formulario - Diseño moderno y tecnológico */
+#login-form {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+              0 0 0 1px rgba(255, 255, 255, 0.5) inset !important;
+  padding: 50px 45px 45px 45px !important;
+  max-width: 420px !important;
+  margin: 80px auto !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Efecto de brillo sutil en el borde */
+#login-form::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(100, 140, 180, 0.5), 
+    rgba(52, 84, 116, 0.5), 
+    transparent) !important;
+  animation: shimmer 3s infinite !important;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Hover effect en el formulario */
+#login-form:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
+              0 0 0 1px rgba(255, 255, 255, 0.5) inset !important;
+}
+
+/* Logo mejorado con efecto */
+#login-form::before {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15)) !important;
+  margin-bottom: 35px !important;
+  transition: transform 0.3s ease !important;
+}
+
+#login-form:hover::before {
+  transform: scale(1.02) !important;
+}
+
+/* Campos de entrada modernos y tecnológicos */
+#login-form input[type="text"],
+#login-form input[type="password"] {
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa) !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  font-size: 15px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05),
+              inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  color: #1e293b !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Placeholder moderno */
+#login-form input[type="text"]::placeholder,
+#login-form input[type="password"]::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 400 !important;
+}
+
+/* Focus state tecnológico y moderno */
+#login-form input[type="text"]:focus,
+#login-form input[type="password"]:focus {
+  outline: none !important;
+  border-color: #648cb4 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(100, 140, 180, 0.1),
+              0 4px 12px rgba(100, 140, 180, 0.15),
+              inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Labels modernos */
+#login-form label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  margin-bottom: 10px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  display: block !important;
+}
+
+/* Botón moderno y tecnológico */
+#login-form input[type="submit"],
+#login-form button[type="submit"],
+#login-submit {
+  background: linear-gradient(135deg, #648cb4 0%, #345474 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  padding: 16px 32px !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 14px rgba(100, 140, 180, 0.4),
+              0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  width: 100% !important;
+  margin-top: 10px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Efecto de brillo en el botón */
+#login-form input[type="submit"]::before,
+#login-form button[type="submit"]::before,
+#login-submit::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent) !important;
+  transition: left 0.5s ease !important;
+}
+
+#login-form input[type="submit"]:hover::before,
+#login-form button[type="submit"]:hover::before,
+#login-submit:hover::before {
+  left: 100% !important;
+}
+
+/* Hover effect en el botón */
+#login-form input[type="submit"]:hover,
+#login-form button[type="submit"]:hover,
+#login-submit:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(100, 140, 180, 0.5),
+              0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  background: linear-gradient(135deg, #648cb4 0%, #345474 100%) !important;
+}
+
+/* Active state del botón */
+#login-form input[type="submit"]:active,
+#login-form button[type="submit"]:active,
+#login-submit:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(100, 140, 180, 0.3) !important;
+}
+
+/* Link "Olvidaste la contraseña" moderno */
+#login-form label > a {
+  color: #345474  !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  transition: all 0.3s ease !important;
+  float: none !important;
+  display: inline-block !important;
+  margin-top: 4px !important;
+  position: relative !important;
+}
+
+#login-form label > a::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: -2px !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #648cb4, #345474) !important;
+  transition: width 0.3s ease !important;
+}
+
+#login-form label > a:hover {
+  color: #648cb4 !important;
+}
+
+#login-form label > a:hover::after {
+  width: 100% !important;
+}
+
+/* Checkbox moderno */
+#login-form input[type="checkbox"] {
+  width: auto !important;
+  margin-right: 8px !important;
+  cursor: pointer !important;
+  accent-color: #648cb4 !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Tabla del formulario */
+#login-form table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+}
+
+#login-form td {
+  padding: 8px 0 !important;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#login-form {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Mejorar el contenido general de la página de login */
+body.action-login #content,
+body.controller-account.action-login #content {
+  padding: 20px 0 !important;
+}
+
+/* ============================================
+   PADDING PARA MENSAJES DE ERROR/FLASH
+   ============================================ */
+/* Agregar padding a los mensajes flash (error, warning, notice) */
+.flash,
+#flash_notice,
+#flash_warning,
+#flash_error,
+.error,
+.warning,
+.notice {
+  padding: 15px 20px !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+}
+
+/* Mensajes flash específicos */
+div.flash,
+div#flash_notice,
+div#flash_warning,
+div#flash_error {
+  padding: 15px 25px !important;
+  margin: 10px 0 !important;
+  border-radius: 8px !important;
+}
+
+/* Asegurar que los mensajes tengan espacio en los bordes */
+body.action-login .flash,
+body.controller-account.action-login .flash,
+body.action-login #flash_notice,
+body.controller-account.action-login #flash_notice,
+body.action-login #flash_warning,
+body.controller-account.action-login #flash_warning,
+body.action-login #flash_error,
+body.controller-account.action-login #flash_error {
+  margin: 15px 20px !important;
+  padding: 15px 25px !important;
+  border-radius: 8px !important;
+}
+
+/* Mensajes de error en general */
+.errorExplanation,
+div.errorExplanation {
+  padding: 20px 25px !important;
+  margin: 15px 20px !important;
+  border-radius: 8px !important;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  #login-form {
+    margin: 40px 20px !important;
+    padding: 40px 30px 35px 30px !important;
+    border-radius: 16px !important;
+  }
+  
+  body.action-login,
+  body.controller-account.action-login {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+  }
+}
+
+/* ============================================
    OCULTAR LOGOS EN OTRAS UBICACIONES
    ============================================ */
 /* Ocultar logo de la esquina superior izquierda */
