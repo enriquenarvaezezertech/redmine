@@ -84,6 +84,210 @@
     return result;
   }
   
+  // Función para crear vista personalizada cuando el usuario está logueado
+  function initLoggedInView() {
+    console.log('Ezertech: 🎨 Iniciando vista personalizada para usuario logueado...');
+    
+    const content = document.getElementById('content');
+    if (!content) {
+      console.log('Ezertech: ❌ No se encontró #content');
+      return false;
+    }
+    
+    // Verificar si ya se inyectó el contenido
+    if (content.querySelector('.ezertech-logged-in-hero')) {
+      console.log('Ezertech: ✅ Vista de usuario logueado ya inyectada');
+      return true;
+    }
+    
+    // Cargar Font Awesome desde CDN si no está cargado
+    if (!document.querySelector('link[href*="font-awesome"]') && 
+        !document.querySelector('link[href*="fontawesome"]')) {
+      const fontAwesomeLink = document.createElement('link');
+      fontAwesomeLink.rel = 'stylesheet';
+      fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+      fontAwesomeLink.integrity = 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==';
+      fontAwesomeLink.crossOrigin = 'anonymous';
+      document.head.appendChild(fontAwesomeLink);
+    }
+    
+    // Obtener nombre de usuario si está disponible
+    const loggedAs = document.getElementById('loggedas');
+    let userName = 'Usuario';
+    if (loggedAs) {
+      const loggedText = loggedAs.textContent || '';
+      const match = loggedText.match(/(?:Conectado como|Logged in as|como)\s+([^\s]+)/i);
+      if (match && match[1]) {
+        userName = match[1];
+      }
+    }
+    
+    // Crear el contenido personalizado para usuario logueado
+    const customContent = document.createElement('div');
+    customContent.className = 'ezertech-logged-in-content';
+    
+    // Hero Section para usuario logueado
+    const hero = document.createElement('div');
+    hero.className = 'ezertech-logged-in-hero';
+    hero.innerHTML = `
+      <div class="ezertech-welcome-user">
+        <div class="ezertech-user-icon">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <h1>¡Bienvenido de vuelta, ${userName}!</h1>
+        <p>Gestiona tus proyectos, tickets y tareas desde un solo lugar</p>
+      </div>
+    `;
+    
+    // Grid de tarjetas de acceso rápido
+    const quickAccessGrid = document.createElement('div');
+    quickAccessGrid.className = 'ezertech-quick-access-grid';
+    
+    const quickAccessCards = [
+      {
+        icon: '<i class="fas fa-ticket-alt"></i>',
+        title: 'Mis Tickets',
+        text: 'Ver y gestionar todos tus tickets asignados',
+        link: '/issues',
+        color: '#648cb4'
+      },
+      {
+        icon: '<i class="fas fa-project-diagram"></i>',
+        title: 'Mis Proyectos',
+        text: 'Accede a todos tus proyectos activos',
+        link: '/projects',
+        color: '#345474'
+      },
+      {
+        icon: '<i class="fas fa-tasks"></i>',
+        title: 'Mis Tareas',
+        text: 'Revisa el estado de tus tareas pendientes',
+        link: '/issues?assigned_to_id=me',
+        color: '#648cb4'
+      },
+      {
+        icon: '<i class="fas fa-chart-bar"></i>',
+        title: 'Reportes',
+        text: 'Visualiza estadísticas y reportes de tus proyectos',
+        link: '/issues/report',
+        color: '#345474'
+      },
+      {
+        icon: '<i class="fas fa-calendar-alt"></i>',
+        title: 'Calendario',
+        text: 'Consulta fechas importantes y eventos',
+        link: '/calendar',
+        color: '#648cb4'
+      },
+      {
+        icon: '<i class="fas fa-user-cog"></i>',
+        title: 'Mi Cuenta',
+        text: 'Gestiona tu perfil y preferencias',
+        link: '/my/account',
+        color: '#345474'
+      }
+    ];
+    
+    quickAccessCards.forEach(card => {
+      const cardElement = document.createElement('a');
+      cardElement.href = card.link;
+      cardElement.className = 'ezertech-quick-access-card';
+      cardElement.innerHTML = `
+        <div class="ezertech-quick-access-icon" style="background: linear-gradient(135deg, ${card.color} 0%, ${card.color}dd 100%);">
+          ${card.icon}
+        </div>
+        <h3>${card.title}</h3>
+        <p>${card.text}</p>
+        <div class="ezertech-card-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      `;
+      quickAccessGrid.appendChild(cardElement);
+    });
+    
+    // Sección de estadísticas rápidas
+    const statsSection = document.createElement('div');
+    statsSection.className = 'ezertech-stats-section';
+    statsSection.innerHTML = `
+      <h2>Resumen Rápido</h2>
+      <div class="ezertech-stats-grid">
+        <div class="ezertech-stat-card">
+          <div class="ezertech-stat-icon stat-primary">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+          <div class="ezertech-stat-content">
+            <div class="ezertech-stat-value">-</div>
+            <div class="ezertech-stat-label">Tickets Abiertos</div>
+          </div>
+        </div>
+        <div class="ezertech-stat-card">
+          <div class="ezertech-stat-icon stat-success">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="ezertech-stat-content">
+            <div class="ezertech-stat-value">-</div>
+            <div class="ezertech-stat-label">Tickets Resueltos</div>
+          </div>
+        </div>
+        <div class="ezertech-stat-card">
+          <div class="ezertech-stat-icon stat-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="ezertech-stat-content">
+            <div class="ezertech-stat-value">-</div>
+            <div class="ezertech-stat-label">Pendientes</div>
+          </div>
+        </div>
+        <div class="ezertech-stat-card">
+          <div class="ezertech-stat-icon stat-info">
+            <i class="fas fa-project-diagram"></i>
+          </div>
+          <div class="ezertech-stat-content">
+            <div class="ezertech-stat-value">-</div>
+            <div class="ezertech-stat-label">Proyectos Activos</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Agregar todo al contenedor
+    customContent.appendChild(hero);
+    customContent.appendChild(quickAccessGrid);
+    customContent.appendChild(statsSection);
+    
+    // Buscar el título "Inicio" y reemplazarlo
+    const welcomeTitle = content.querySelector('h1, h2');
+    const welcomeText = content.querySelector('p');
+    
+    if (welcomeTitle) {
+      if (welcomeTitle.parentNode === content) {
+        content.insertBefore(customContent, welcomeTitle);
+      } else {
+        const firstChild = content.firstElementChild || content.firstChild;
+        if (firstChild) {
+          content.insertBefore(customContent, firstChild);
+        } else {
+          content.appendChild(customContent);
+        }
+      }
+      
+      welcomeTitle.style.display = 'none';
+      if (welcomeText) {
+        welcomeText.style.display = 'none';
+      }
+    } else {
+      const firstChild = content.firstElementChild || content.firstChild;
+      if (firstChild) {
+        content.insertBefore(customContent, firstChild);
+      } else {
+        content.appendChild(customContent);
+      }
+    }
+    
+    console.log('Ezertech: ✅✅✅ Vista de usuario logueado inyectada exitosamente');
+    return true;
+  }
+  
   // Función principal de inicialización
   function init() {
     console.log('Ezertech: init() ejecutado');
@@ -94,15 +298,15 @@
       return false;
     }
     
-    // Verificar si el usuario está logueado - si está logueado, NO mostrar el contenido personalizado
+    // Verificar si el usuario está logueado
     const userLoggedIn = isUserLoggedIn();
     console.log('Ezertech: Estado de login =', userLoggedIn);
     
     // Agregar clase al body para CSS de respaldo
     if (userLoggedIn) {
       document.body.classList.add('user-logged-in');
-      console.log('Ezertech: ⚠️ Usuario logueado detectado - NO se mostrará el contenido personalizado');
-      return false;
+      console.log('Ezertech: ✅ Usuario logueado detectado - Mostrando vista personalizada para usuarios logueados');
+      return initLoggedInView();
     } else {
       document.body.classList.remove('user-logged-in');
     }
