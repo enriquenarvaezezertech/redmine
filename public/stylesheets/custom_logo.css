@@ -505,15 +505,24 @@ body.user-logged-in .ezertech-logged-in-content ~ p {
   display: none !important;
 }
 
-/* Hero Section para usuario logueado */
+/* Asegurar que NO se muestre contenido personalizado en páginas excluidas */
+body.controller-settings .ezertech-logged-in-content,
+body.controller-admin .ezertech-logged-in-content,
+body.controller-projects.action-show .ezertech-logged-in-content,
+body.controller-issues.action-show .ezertech-logged-in-content {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Hero Section para usuario logueado - más compacto */
 .ezertech-logged-in-hero {
   background: linear-gradient(135deg, #648cb4 0%, #345474 100%) !important;
-  border-radius: 20px !important;
-  padding: 50px 40px !important;
-  margin-bottom: 40px !important;
+  border-radius: 16px !important;
+  padding: 30px 30px !important;
+  margin-bottom: 25px !important;
   color: white !important;
   text-align: center !important;
-  box-shadow: 0 10px 40px rgba(52, 84, 116, 0.3) !important;
+  box-shadow: 0 8px 30px rgba(52, 84, 116, 0.25) !important;
   position: relative !important;
   overflow: hidden !important;
 }
@@ -524,8 +533,8 @@ body.user-logged-in .ezertech-logged-in-content ~ p {
 }
 
 .ezertech-user-icon {
-  font-size: 80px !important;
-  margin-bottom: 20px !important;
+  font-size: 50px !important;
+  margin-bottom: 12px !important;
   opacity: 0.9 !important;
   animation: pulse 2s ease-in-out infinite !important;
 }
@@ -536,19 +545,115 @@ body.user-logged-in .ezertech-logged-in-content ~ p {
 }
 
 .ezertech-logged-in-hero h1 {
-  font-size: 2.5em !important;
+  font-size: 1.8em !important;
   font-weight: 700 !important;
-  margin-bottom: 15px !important;
+  margin-bottom: 8px !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
 }
 
 .ezertech-logged-in-hero p {
-  font-size: 1.2em !important;
+  font-size: 1em !important;
   opacity: 0.95 !important;
   margin: 0 !important;
 }
 
-/* Grid de acceso rápido */
+/* Secciones de módulos */
+.ezertech-section-module {
+  margin-bottom: 30px !important;
+  padding: 0 !important;
+}
+
+.ezertech-section-title {
+  font-size: 1.4em !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.ezertech-section-title i {
+  color: #648cb4 !important;
+  font-size: 1.2em !important;
+}
+
+/* Grid de botones compactos */
+.ezertech-buttons-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Botones de módulo compactos */
+.ezertech-module-button {
+  background: white !important;
+  border-radius: 12px !important;
+  padding: 16px 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 90px !important;
+}
+
+.ezertech-module-button::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, #648cb4, #345474) !important;
+  transform: scaleX(0) !important;
+  transform-origin: left !important;
+  transition: transform 0.2s ease !important;
+}
+
+.ezertech-module-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.ezertech-module-button:hover::before {
+  transform: scaleX(1) !important;
+}
+
+.ezertech-module-button i {
+  font-size: 28px !important;
+  color: #648cb4 !important;
+  margin-bottom: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ezertech-module-button:hover i {
+  color: #345474 !important;
+  transform: scale(1.1) !important;
+}
+
+.ezertech-module-button span {
+  font-size: 0.85em !important;
+  font-weight: 500 !important;
+  color: #1e293b !important;
+  line-height: 1.3 !important;
+  word-break: break-word !important;
+}
+
+/* Grid de acceso rápido (mantener para compatibilidad) */
 .ezertech-quick-access-grid {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
@@ -739,24 +844,37 @@ body.user-logged-in .ezertech-logged-in-content ~ p {
 /* Responsive para usuarios logueados */
 @media (max-width: 768px) {
   .ezertech-logged-in-hero {
-    padding: 35px 25px !important;
+    padding: 25px 20px !important;
   }
   
   .ezertech-logged-in-hero h1 {
-    font-size: 1.8em !important;
+    font-size: 1.5em !important;
   }
   
   .ezertech-user-icon {
-    font-size: 60px !important;
+    font-size: 40px !important;
   }
   
-  .ezertech-quick-access-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
+  .ezertech-buttons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+    gap: 10px !important;
   }
   
-  .ezertech-stats-grid {
-    grid-template-columns: 1fr !important;
+  .ezertech-module-button {
+    padding: 12px 8px !important;
+    min-height: 80px !important;
+  }
+  
+  .ezertech-module-button i {
+    font-size: 24px !important;
+  }
+  
+  .ezertech-module-button span {
+    font-size: 0.75em !important;
+  }
+  
+  .ezertech-section-title {
+    font-size: 1.2em !important;
   }
 }
 

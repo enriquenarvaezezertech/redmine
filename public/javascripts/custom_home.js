@@ -63,24 +63,66 @@
       return false;
     }
     
+    // Excluir páginas específicas donde NO debe aparecer el contenido personalizado
+    const excludedPaths = [
+      '/settings', 
+      '/admin/', 
+      '/login', 
+      '/account/register',
+      '/projects/',
+      '/issues/',
+      '/activity',
+      '/time_entries',
+      '/users',
+      '/groups',
+      '/roles',
+      '/trackers',
+      '/issue_statuses',
+      '/workflows',
+      '/custom_fields',
+      '/enumerations',
+      '/auth_sources',
+      '/news'
+    ];
+    
+    // Verificar si la URL contiene alguna ruta excluida (solo si no es la raíz)
+    if (url !== '/' && url !== '') {
+      for (let excludedPath of excludedPaths) {
+        // Verificar coincidencia exacta o que la URL empiece con la ruta excluida
+        if (url === excludedPath || url.startsWith(excludedPath + '/') || url.startsWith(excludedPath + '?')) {
+          console.log('Ezertech: Página excluida:', excludedPath, 'URL:', url);
+          return false;
+        }
+      }
+    }
+    
     // Método 1: Verificar clases del body
     const hasWelcomeClass = body.classList.contains('controller-welcome') && 
                            body.classList.contains('action-index');
     
-    // Método 2: Verificar URL
+    // Método 2: Verificar URL (solo raíz exacta, no otras rutas)
     const isRootUrl = url === '/' || url === '' || url.match(/^\/$/);
     
-    // Método 3: Verificar contenido de texto
-    const contentText = content.textContent || '';
-    const hasInicioContent = contentText.includes('Estamos aquí para ayudarte') ||
-                            contentText.includes('Gestiona tus solicitudes');
+    // Si no es la raíz y tiene alguna ruta, verificar contenido antes de decidir
+    if (!isRootUrl && url.length > 1) {
+      // Método 3: Verificar contenido de texto (solo si es realmente la página de inicio)
+      const contentText = content.textContent || '';
+      const hasInicioContent = contentText.includes('Estamos aquí para ayudarte') ||
+                              contentText.includes('Gestiona tus solicitudes');
+      
+      // Método 4: Verificar títulos
+      const title = content.querySelector('h1, h2');
+      const hasInicioTitle = title && (title.textContent.includes('Inicio') || title.textContent.includes('Home'));
+      
+      // Solo considerar como página de inicio si tiene clases específicas O contenido de inicio
+      const result = hasWelcomeClass || (hasInicioContent && hasInicioTitle);
+      console.log('Ezertech: isHomePage (con ruta) =', result, {hasWelcomeClass, hasInicioContent, hasInicioTitle, url});
+      return result;
+    }
     
-    // Método 4: Verificar títulos
-    const title = content.querySelector('h1, h2');
-    const hasInicioTitle = title && (title.textContent.includes('Inicio') || title.textContent.includes('Home'));
-    
-    const result = hasWelcomeClass || isRootUrl || hasInicioContent || hasInicioTitle;
-    console.log('Ezertech: isHomePage =', result, {hasWelcomeClass, isRootUrl, hasInicioContent, hasInicioTitle});
+    // Si es la raíz, es página de inicio
+    const result = hasWelcomeClass || isRootUrl;
+    console.log('Ezertech: isHomePage (raíz) =', result, {hasWelcomeClass, isRootUrl, url});
     return result;
   }
   
@@ -139,121 +181,114 @@
       </div>
     `;
     
-    // Grid de tarjetas de acceso rápido
-    const quickAccessGrid = document.createElement('div');
-    quickAccessGrid.className = 'ezertech-quick-access-grid';
+    // Sección de Proyectos
+    const proyectosSection = document.createElement('div');
+    proyectosSection.className = 'ezertech-section-module';
+    proyectosSection.innerHTML = `
+      <h2 class="ezertech-section-title">
+        <i class="fas fa-project-diagram"></i>
+        Sesión - Proyectos
+      </h2>
+      <div class="ezertech-buttons-grid">
+        <a href="/projects" class="ezertech-module-button">
+          <i class="fas fa-folder-open"></i>
+          <span>Proyectos</span>
+        </a>
+        <a href="/activity" class="ezertech-module-button">
+          <i class="fas fa-chart-line"></i>
+          <span>Actividad</span>
+        </a>
+        <a href="/issues" class="ezertech-module-button">
+          <i class="fas fa-ticket-alt"></i>
+          <span>Peticiones</span>
+        </a>
+        <a href="/time_entries" class="ezertech-module-button">
+          <i class="fas fa-clock"></i>
+          <span>Tiempo Dedicado</span>
+        </a>
+        <a href="/issues/gantt" class="ezertech-module-button">
+          <i class="fas fa-project-diagram"></i>
+          <span>Gantt</span>
+        </a>
+        <a href="/issues/calendar" class="ezertech-module-button">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Calendario</span>
+        </a>
+        <a href="/news" class="ezertech-module-button">
+          <i class="fas fa-newspaper"></i>
+          <span>Noticias</span>
+        </a>
+      </div>
+    `;
     
-    const quickAccessCards = [
-      {
-        icon: '<i class="fas fa-ticket-alt"></i>',
-        title: 'Mis Tickets',
-        text: 'Ver y gestionar todos tus tickets asignados',
-        link: '/issues',
-        color: '#648cb4'
-      },
-      {
-        icon: '<i class="fas fa-project-diagram"></i>',
-        title: 'Mis Proyectos',
-        text: 'Accede a todos tus proyectos activos',
-        link: '/projects',
-        color: '#345474'
-      },
-      {
-        icon: '<i class="fas fa-tasks"></i>',
-        title: 'Mis Tareas',
-        text: 'Revisa el estado de tus tareas pendientes',
-        link: '/issues?assigned_to_id=me',
-        color: '#648cb4'
-      },
-      {
-        icon: '<i class="fas fa-chart-bar"></i>',
-        title: 'Reportes',
-        text: 'Visualiza estadísticas y reportes de tus proyectos',
-        link: '/issues/report',
-        color: '#345474'
-      },
-      {
-        icon: '<i class="fas fa-calendar-alt"></i>',
-        title: 'Calendario',
-        text: 'Consulta fechas importantes y eventos',
-        link: '/calendar',
-        color: '#648cb4'
-      },
-      {
-        icon: '<i class="fas fa-user-cog"></i>',
-        title: 'Mi Cuenta',
-        text: 'Gestiona tu perfil y preferencias',
-        link: '/my/account',
-        color: '#345474'
-      }
-    ];
-    
-    quickAccessCards.forEach(card => {
-      const cardElement = document.createElement('a');
-      cardElement.href = card.link;
-      cardElement.className = 'ezertech-quick-access-card';
-      cardElement.innerHTML = `
-        <div class="ezertech-quick-access-icon" style="background: linear-gradient(135deg, ${card.color} 0%, ${card.color}dd 100%);">
-          ${card.icon}
-        </div>
-        <h3>${card.title}</h3>
-        <p>${card.text}</p>
-        <div class="ezertech-card-arrow">
-          <i class="fas fa-arrow-right"></i>
-        </div>
-      `;
-      quickAccessGrid.appendChild(cardElement);
-    });
-    
-    // Sección de estadísticas rápidas
-    const statsSection = document.createElement('div');
-    statsSection.className = 'ezertech-stats-section';
-    statsSection.innerHTML = `
-      <h2>Resumen Rápido</h2>
-      <div class="ezertech-stats-grid">
-        <div class="ezertech-stat-card">
-          <div class="ezertech-stat-icon stat-primary">
-            <i class="fas fa-ticket-alt"></i>
-          </div>
-          <div class="ezertech-stat-content">
-            <div class="ezertech-stat-value">-</div>
-            <div class="ezertech-stat-label">Tickets Abiertos</div>
-          </div>
-        </div>
-        <div class="ezertech-stat-card">
-          <div class="ezertech-stat-icon stat-success">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <div class="ezertech-stat-content">
-            <div class="ezertech-stat-value">-</div>
-            <div class="ezertech-stat-label">Tickets Resueltos</div>
-          </div>
-        </div>
-        <div class="ezertech-stat-card">
-          <div class="ezertech-stat-icon stat-warning">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
-          <div class="ezertech-stat-content">
-            <div class="ezertech-stat-value">-</div>
-            <div class="ezertech-stat-label">Pendientes</div>
-          </div>
-        </div>
-        <div class="ezertech-stat-card">
-          <div class="ezertech-stat-icon stat-info">
-            <i class="fas fa-project-diagram"></i>
-          </div>
-          <div class="ezertech-stat-content">
-            <div class="ezertech-stat-value">-</div>
-            <div class="ezertech-stat-label">Proyectos Activos</div>
-          </div>
-        </div>
+    // Sección de Administración
+    const adminSection = document.createElement('div');
+    adminSection.className = 'ezertech-section-module';
+    adminSection.innerHTML = `
+      <h2 class="ezertech-section-title">
+        <i class="fas fa-cog"></i>
+        Sesión - Administración
+      </h2>
+      <div class="ezertech-buttons-grid">
+        <a href="/admin/projects" class="ezertech-module-button">
+          <i class="fas fa-folder"></i>
+          <span>Proyectos</span>
+        </a>
+        <a href="/users" class="ezertech-module-button">
+          <i class="fas fa-users"></i>
+          <span>Usuarios</span>
+        </a>
+        <a href="/groups" class="ezertech-module-button">
+          <i class="fas fa-user-friends"></i>
+          <span>Grupos</span>
+        </a>
+        <a href="/roles" class="ezertech-module-button">
+          <i class="fas fa-user-shield"></i>
+          <span>Perfiles y Permisos</span>
+        </a>
+        <a href="/trackers" class="ezertech-module-button">
+          <i class="fas fa-tags"></i>
+          <span>Tipos de Peticiones</span>
+        </a>
+        <a href="/issue_statuses" class="ezertech-module-button">
+          <i class="fas fa-info-circle"></i>
+          <span>Estados de la Peticiones</span>
+        </a>
+        <a href="/workflows/edit" class="ezertech-module-button">
+          <i class="fas fa-sitemap"></i>
+          <span>Flujo de Trabajo</span>
+        </a>
+        <a href="/custom_fields" class="ezertech-module-button">
+          <i class="fas fa-edit"></i>
+          <span>Campos Personalizados</span>
+        </a>
+        <a href="/enumerations" class="ezertech-module-button">
+          <i class="fas fa-list"></i>
+          <span>Lista de Valores</span>
+        </a>
+        <a href="/settings" class="ezertech-module-button">
+          <i class="fas fa-sliders-h"></i>
+          <span>Configuración</span>
+        </a>
+        <a href="/auth_sources" class="ezertech-module-button">
+          <i class="fas fa-key"></i>
+          <span>Autenticación LDAP</span>
+        </a>
+        <a href="/admin/plugins" class="ezertech-module-button">
+          <i class="fas fa-plug"></i>
+          <span>Extensiones</span>
+        </a>
+        <a href="/admin/info" class="ezertech-module-button">
+          <i class="fas fa-info"></i>
+          <span>Información</span>
+        </a>
       </div>
     `;
     
     // Agregar todo al contenedor
     customContent.appendChild(hero);
-    customContent.appendChild(quickAccessGrid);
-    customContent.appendChild(statsSection);
+    customContent.appendChild(proyectosSection);
+    customContent.appendChild(adminSection);
     
     // Buscar el título "Inicio" y reemplazarlo
     const welcomeTitle = content.querySelector('h1, h2');
