@@ -101,6 +101,14 @@
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
+/* Ocultar botón "Registrar" sin alterar la estructura del header */
+#top-menu a.register,
+#top-menu .register,
+#top-menu li:has(a.register) {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 /* ============================================
    TARJETA DE BIENVENIDA CENTRADA - PÁGINA DE INICIO
    ============================================ */
