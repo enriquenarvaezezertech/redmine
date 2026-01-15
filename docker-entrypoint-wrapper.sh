@@ -15,7 +15,7 @@ echo "=========================================="
 echo "Redmine Customization Initialization Script"
 echo "=========================================="
 
-# Función para inyectar CSS en el layout
+# FunciÃ³n para inyectar CSS en el layout
 inject_logo_css() {
     local retry_count=0
     
@@ -27,9 +27,9 @@ inject_logo_css() {
             continue
         fi
 
-        # Verificar si el CSS ya está incluido
+        # Verificar si el CSS ya estÃ¡ incluido
         if grep -q "custom_logo.css" "$LAYOUT_FILE"; then
-            echo "✓ Logo CSS already injected in layout"
+            echo "âœ“ Logo CSS already injected in layout"
             return 0
         fi
 
@@ -38,33 +38,33 @@ inject_logo_css() {
         cp "$LAYOUT_FILE" "$BACKUP_FILE" 2>/dev/null || true
         echo "Created backup: $BACKUP_FILE"
 
-        # Método 1: Buscar la línea con stylesheet_link_tag para application y agregar después
+        # MÃ©todo 1: Buscar la lÃ­nea con stylesheet_link_tag para application y agregar despuÃ©s
         if grep -q "stylesheet_link_tag.*application" "$LAYOUT_FILE"; then
-            # Insertar después de la línea de application stylesheet
+            # Insertar despuÃ©s de la lÃ­nea de application stylesheet
             sed -i '/stylesheet_link_tag.*application/a\
     <%= stylesheet_link_tag "'"$CSS_PATH"'", :media => "all" %>
 ' "$LAYOUT_FILE"
-            echo "✓ Logo CSS injected successfully after application stylesheet"
+            echo "âœ“ Logo CSS injected successfully after application stylesheet"
             return 0
         fi
 
-        # Método 2: Buscar cualquier stylesheet_link_tag
+        # MÃ©todo 2: Buscar cualquier stylesheet_link_tag
         if grep -q "stylesheet_link_tag" "$LAYOUT_FILE"; then
-            # Insertar después de la última línea de stylesheet_link_tag
+            # Insertar despuÃ©s de la Ãºltima lÃ­nea de stylesheet_link_tag
             sed -i '/stylesheet_link_tag/{
 a\
     <%= stylesheet_link_tag "'"$CSS_PATH"'", :media => "all" %>
 }' "$LAYOUT_FILE"
-            echo "✓ Logo CSS injected after stylesheet tags"
+            echo "âœ“ Logo CSS injected after stylesheet tags"
             return 0
         fi
 
-        # Método 3: Buscar </head> y agregar antes
+        # MÃ©todo 3: Buscar </head> y agregar antes
         if grep -q "</head>" "$LAYOUT_FILE"; then
             sed -i '/<\/head>/i\
     <%= stylesheet_link_tag "'"$CSS_PATH"'", :media => "all" %>
 ' "$LAYOUT_FILE"
-            echo "✓ Logo CSS injected in head section"
+            echo "âœ“ Logo CSS injected in head section"
             return 0
         fi
 
@@ -73,11 +73,11 @@ a\
         sleep $RETRY_DELAY
     done
 
-    echo "✗ Failed to inject CSS after $MAX_RETRIES attempts"
+    echo "âœ— Failed to inject CSS after $MAX_RETRIES attempts"
     return 1
 }
 
-# Función para inyectar JavaScript en el layout
+# FunciÃ³n para inyectar JavaScript en el layout
 inject_custom_js() {
     local retry_count=0
     
@@ -89,39 +89,39 @@ inject_custom_js() {
             continue
         fi
 
-        # Verificar si el JS ya está incluido
+        # Verificar si el JS ya estÃ¡ incluido
         if grep -q "custom_home.js" "$LAYOUT_FILE"; then
-            echo "✓ Custom JS already injected in layout"
+            echo "âœ“ Custom JS already injected in layout"
             return 0
         fi
 
-        # Método 1: Buscar </head> y agregar antes (más confiable)
+        # MÃ©todo 1: Buscar </head> y agregar antes (mÃ¡s confiable)
         if grep -q "</head>" "$LAYOUT_FILE"; then
             # Inyectar script tag directamente antes de </head>
             sed -i '/<\/head>/i\
     <script src="/javascripts/custom_home.js"></script>
 ' "$LAYOUT_FILE"
-            echo "✓ Custom JS injected in head section (inline script tag)"
+            echo "âœ“ Custom JS injected in head section (inline script tag)"
             return 0
         fi
 
-        # Método 2: Buscar javascript_include_tag y agregar después
+        # MÃ©todo 2: Buscar javascript_include_tag y agregar despuÃ©s
         if grep -q "javascript_include_tag" "$LAYOUT_FILE"; then
             sed -i '/javascript_include_tag/{
 a\
     <%= javascript_include_tag "'"$JS_PATH"'", :defer => false %>
 }' "$LAYOUT_FILE"
-            echo "✓ Custom JS injected after javascript tags"
+            echo "âœ“ Custom JS injected after javascript tags"
             return 0
         fi
 
-        # Método 3: Buscar </body> y agregar antes
+        # MÃ©todo 3: Buscar </body> y agregar antes
         if grep -q "</body>" "$LAYOUT_FILE"; then
             # Intentar insertar antes de </body>
             sed -i '/<\/body>/i\
     <%= javascript_include_tag "'"$JS_PATH"'", :defer => false %>
 ' "$LAYOUT_FILE"
-            echo "✓ Custom JS injected successfully before </body>"
+            echo "âœ“ Custom JS injected successfully before </body>"
             return 0
         fi
 
@@ -130,22 +130,22 @@ a\
         sleep $RETRY_DELAY
     done
 
-    echo "✗ Failed to inject JS after $MAX_RETRIES attempts"
+    echo "âœ— Failed to inject JS after $MAX_RETRIES attempts"
     return 1
 }
 
 # Verificar que los archivos necesarios existen
 echo "Checking required files..."
 if [ ! -f "/usr/src/redmine/public/images/logo.png" ]; then
-    echo "⚠ Warning: Logo file not found at /usr/src/redmine/public/images/logo.png"
+    echo "âš  Warning: Logo file not found at /usr/src/redmine/public/images/logo.png"
 fi
 
 if [ ! -f "/usr/src/redmine/public/stylesheets/custom_logo.css" ]; then
-    echo "⚠ Warning: CSS file not found at /usr/src/redmine/public/stylesheets/custom_logo.css"
+    echo "âš  Warning: CSS file not found at /usr/src/redmine/public/stylesheets/custom_logo.css"
 fi
 
 if [ ! -f "/usr/src/redmine/public/javascripts/custom_home.js" ]; then
-    echo "⚠ Warning: JS file not found at /usr/src/redmine/public/javascripts/custom_home.js"
+    echo "âš  Warning: JS file not found at /usr/src/redmine/public/javascripts/custom_home.js"
 fi
 
 # Intentar inyectar el CSS
