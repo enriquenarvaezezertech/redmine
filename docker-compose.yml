@@ -4,6 +4,8 @@ services:
     container_name: redmine
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       REDMINE_DB_MYSQL: db
       REDMINE_DB_DATABASE: redmine
